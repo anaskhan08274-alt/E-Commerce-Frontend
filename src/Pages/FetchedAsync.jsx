@@ -59,6 +59,7 @@ export function FetchedAsync() {
         gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
         gap: "20px",
         padding: "20px",
+        marginTop: '50px'
       }}
     >
       {products.map((product) => (
