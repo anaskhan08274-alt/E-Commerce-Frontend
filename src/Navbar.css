@@ -1,0 +1,84 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  position: fixed;      /* ✅ FIXED NAVBAR */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;        /* taaki sabse upar rahe */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a; /* Dark Blue */
+  padding: 12px 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #38bdf8;
+}
+
+.auth-btn button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.login-btn {
+  background: #22c55e;
+  color: white;
+}
+
+.logout-btn {
+  background: #ef4444;
+  color: white;
+}
+
+.login-btn:hover {
+  background: #16a34a;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+}
