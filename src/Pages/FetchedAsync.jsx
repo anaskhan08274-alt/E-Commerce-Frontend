@@ -1,137 +1,144 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "./creatCartContext";
-export function FetchedAsync(){
+
+export function FetchedAsync() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const navigate = useNavigate();
 
-  const {cartItems = [] , AddToCart , BuyNow} = useCart()
+  const { AddToCart } = useCart(); // removed unused variables
+
   const handleAddtoCart = (product) => {
     AddToCart(product);
-    navigate('/cart')
-  }
+    navigate("/cart");
+  };
+
   const handleBuyNow = (product) => {
-  if (!localStorage.getItem("token")) {
-    navigate("/form");   // direct login/signup
-  } else {
-    navigate("/buy-now", { state: { product } });
-  }
-};
+    if (!localStorage.getItem("token")) {
+      navigate("/form");
+    } else {
+      navigate("/buy-now", { state: { product } });
+    }
+  };
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try{
-                setLoading(true);
-                const response = await fetch("https://fakestoreapi.com/products")
-                if(!response.ok) {
-                    throw new Error("failed to fetch the products")
-                }
-                const data = await response.json()
+        const response = await fetch(
+          "https://fakestoreapi.com/products"
+        );
 
-                setProducts(data);
-            }
-            catch (err) {
-                setError("An Error Happened", err)
-            }
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
 
-            finally {
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message); // fixed
+      } finally {
         setLoading(false);
       }
-        }
-        fetchProducts();
-    }, [])
-    
-    if (loading) return <p>Loading...</p>;
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <>
-     <h2 style={{textAlign: "center", marginBottom: "50px"}}></h2> 
-
-    <div 
-    style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-      gap: "20px",
-      padding: "20px",
-    }}
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+        gap: "20px",
+        padding: "20px",
+      }}
     >
-
-    {products.map((product) => (
-      <div
-        key={product.id}
-        style={{
-          border: "2px solid #ddd",
-          borderRadius: "10px",
-          padding: "15px",
-          background: "#fff",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-          textAlign: "center",
-         
-        }}
-      >
-
-        <img
-          src={product.image}
-          alt={product.title}
+      {products.map((product) => (
+        <div
+          key={product.id}
           style={{
-            width: "150px",
-            height: "150px",
-            objectFit: "contain",
-            marginBottom: "20px",
-            margin: "0 auto"
+            border: "2px solid #ddd",
+            borderRadius: "10px",
+            padding: "15px",
+            background: "#fff",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+            textAlign: "center",
           }}
-        />
-
-         <h3 style={{ fontSize: "16px", height: "50px" }}>{product.title}</h3>
-
-        <p style={{ fontSize: "20px", fontWeight: "bold", color: "#2c3e50" }}>
-          ${product.price}
-        </p>
-
-        <div style={{ display: "flex", gap: "10px", marginTop: "15px", }}>
-          <button
+        >
+          <img
+            src={product.image}
+            alt={product.title}
             style={{
-              flex: 1,
-              padding: "10px",
-              background: "#3498db",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontWeight: "bold",
+              width: "150px",
+              height: "150px",
+              objectFit: "contain",
+              marginBottom: "20px",
             }}
-            onClick={() => handleAddtoCart(product)}
-          >
-            Add to Cart
-          </button>
+          />
 
-           <button
+          <h3 style={{ fontSize: "16px", height: "50px" }}>
+            {product.title}
+          </h3>
+
+          <p
             style={{
-              flex: 1,
-              padding: "10px",
-              background: "#27ae60",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
+              fontSize: "20px",
               fontWeight: "bold",
+              color: "#2c3e50",
             }}
-            onClick={() => handleBuyNow(product)}
           >
-            Buy Now
-          </button>
+            ${product.price}
+          </p>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              marginTop: "15px",
+            }}
+          >
+            <button
+              style={{
+                flex: 1,
+                padding: "10px",
+                background: "#3498db",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+              onClick={() => handleAddtoCart(product)}
+            >
+              Add to Cart
+            </button>
+
+            <button
+              style={{
+                flex: 1,
+                padding: "10px",
+                background: "#27ae60",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+              onClick={() => handleBuyNow(product)}
+            >
+              Buy Now
+            </button>
+          </div>
         </div>
-      </div>
-    ))}
-
-
+      ))}
     </div>
-
-    </>
-    )
+  );
 }
