@@ -39,7 +39,7 @@ export function BuyNow() {
   )}&am=${upiAmount}&cu=INR`;
 
   return (
-  <div style={{justifyItems: "center", width: "500px", marginLeft: "45opx"}}>
+  <div style={{justifyItems: "center", width: "500px", marginLeft: "45px"}}>
       <h3 style={{marginTop: "95px"}}>{product.title}</h3>
       <p style={{marginTop: "20px"}}>
         <strong>Price:</strong> ₹{product.price}
