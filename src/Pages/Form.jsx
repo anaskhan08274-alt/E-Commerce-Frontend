@@ -23,7 +23,7 @@ const Form = () => {
     else {
       // SIGNUP → send data to backend
       try {
-        const res = await axios.post("http://localhost:5000/api/adduser", {
+        const res = await axios.post("https://e-commerce-backend-x71x.onrender.com", {
           name,
           email,
           password
